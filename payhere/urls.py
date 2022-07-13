@@ -17,6 +17,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('api/users', include('users.urls')),
+    path('api/account-books', include('account_books.urls')),
 ]
 
 urlpatterns += [
