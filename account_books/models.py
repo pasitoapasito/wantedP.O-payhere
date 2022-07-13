@@ -11,7 +11,7 @@ class AccountBook(TimeStampModel):
     ]
     
     users  = models.ForeignKey('users.User', on_delete=models.CASCADE)
-    name   = models.CharField(max_length=200)
+    name   = models.CharField(max_length=200, unique=True)
     budget = models.DecimalField(max_digits=10, decimal_places=0)
     status = models.CharField(max_length=200, choices=STATUS_TYPES, default='in_use')
     
@@ -36,7 +36,7 @@ class AccountBookLog(TimeStampModel):
     
     categories  = models.ForeignKey('AccountBookCategory', on_delete=models.DO_NOTHING, null=True, blank=True)
     books       = models.ForeignKey('AccountBook', on_delete=models.CASCADE)
-    title       = models.CharField(max_length=200)
+    title       = models.CharField(max_length=200, unique=True)
     price       = models.DecimalField(max_digits=10, decimal_places=0)
     description = models.CharField(max_length=255, null=True, blank=True)
     types       = models.CharField(max_length=200, choices=ACCOUNT_TYPES, default='expenditure')
@@ -57,7 +57,7 @@ class AccountBookCategory(TimeStampModel):
     ]
     
     users  = models.ForeignKey('users.User', on_delete=models.CASCADE)
-    name   = models.CharField(max_length=200)
+    name   = models.CharField(max_length=200, unique=True)
     status = models.CharField(max_length=200, choices=STATUS_TYPES, default='in_use')
     
     def __str__(self):
