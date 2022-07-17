@@ -42,7 +42,7 @@ class AccountBookCategoryView(APIView):
     @swagger_auto_schema(responses={200: AccountBookCategorySerializer}, manual_parameters=[sort, search, status, offset, limit])
     def get(self, request):
         """
-        가계부 카테고리 조회(리스트) 기능
+        GET: 가계부 카테고리 조회(리스트) 기능
         """
         user = request.user
             
@@ -69,7 +69,7 @@ class AccountBookCategoryView(APIView):
             q |= Q(name__icontains = search)
         
         """
-        본인의 가계부 카테고리 정보 호출
+        유저 본인의 가계부 카테고리 정보 호출
         """
         if user:
             q &= Q(users = user)
@@ -86,7 +86,7 @@ class AccountBookCategoryView(APIView):
     @swagger_auto_schema(request_body=AccountBookCategorySerializer, responses={201: AccountBookCategorySerializer})
     def post(self, request):
         """
-        가계부 카테고리 생성 기능
+        POST: 가계부 카테고리 생성 기능
         """
         user = request.user
         
@@ -118,12 +118,12 @@ class AccountBookCategoryDetailView(APIView):
     )
     def patch(self, request, account_book_category_id):
         """
-        가계부 카테고리 수정 기능(가계부 카테고리 이름 수정)
+        PATCH: 가계부 카테고리 수정 기능(가계부 카테고리 이름 수정)
         """
         user = request.user
         
         """
-        가계부 카테고리의 존재여부 및 유저정보 확인
+        가계부 카테고리 객체/유저정보 확인
         """
         category, err = GetAccountBookCategory.get_category_n_check_error(account_book_category_id, user)
         if err:
@@ -140,12 +140,12 @@ class AccountBookCategoryDetailView(APIView):
     @swagger_auto_schema(responses={200: '가계부 카테고리가 삭제되었습니다.'}, manual_parameters=[category_id])
     def delete(self, request, account_book_category_id):
         """
-        가계부 카테고리 삭제 기능
+        DELETE: 가계부 카테고리 삭제 기능
         """
         user = request.user
         
         """
-        가계부 카테고리의 존재여부 및 유저정보 확인
+        가계부 카테고리 객체/유저정보 확인
         """
         category, err = GetAccountBookCategory.get_category_n_check_error(account_book_category_id, user)
         if err:
@@ -175,12 +175,12 @@ class AccountBookeCategoryRestoreView(APIView):
     @swagger_auto_schema(responses={200: '가계부 카테고리가 복구되었습니다.'}, manual_parameters=[category_id])
     def patch(self, request, account_book_category_id):
         """
-        가계부 카테고리 복구 기능
+        PATCH: 가계부 카테고리 복구 기능
         """
         user = request.user
         
         """
-        가계부 카테고리의 존재여부 및 유저정보 확인
+        가계부 카테고리 객체/유저정보 확인
         """
         category, err = GetAccountBookCategory.get_category_n_check_error(account_book_category_id, user)
         if err:

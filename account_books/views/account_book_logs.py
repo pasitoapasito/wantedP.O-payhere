@@ -37,6 +37,7 @@ class AccountBookLogView(APIView):
     search     = openapi.Parameter('search', openapi.IN_QUERY, required=False, pattern='?search=', type=openapi.TYPE_STRING)
     sort       = openapi.Parameter('sort', openapi.IN_QUERY, required=False, pattern='?sort=', type=openapi.TYPE_STRING)
     types      = openapi.Parameter('types', openapi.IN_QUERY, required=False, pattern='?types=', type=openapi.TYPE_STRING)
+    status     = openapi.Parameter('status', openapi.IN_QUERY, required=False, pattern='?status=', type=openapi.TYPE_STRING)
     categories = openapi.Parameter('categories', openapi.IN_QUERY, required=False, pattern='?categories=', type=openapi.TYPE_STRING)
     offset     = openapi.Parameter('offset', openapi.IN_QUERY, required=False, pattern='?offset=', type=openapi.TYPE_STRING)
     limit      = openapi.Parameter('limit', openapi.IN_QUERY, required=False, pattern='?limit=', type=openapi.TYPE_STRING)
@@ -44,17 +45,18 @@ class AccountBookLogView(APIView):
     
     @query_debugger
     @swagger_auto_schema(
-        responses={200: AccountBookLogSchema}, manual_parameters=[search, sort, types, categories, offset, limit, book_id]
+        responses={200: AccountBookLogSchema}, manual_parameters=[search, sort, types, status, categories, offset, limit, book_id]
     )    
     def get(self, request, account_book_id):
         """
-        가계부 기록 조회(리스트) 기능
+        GET: 가계부 기록 조회(리스트) 기능
         """
         user = request.user
             
         search        = request.GET.get('search', None)
         sort          = request.GET.get('sort', 'up_to_date')
-        types         = request.GET.get('types', None) 
+        types         = request.GET.get('types', None)
+        status        = request.GET.get('status', 'deleted') 
         categories_id = request.GET.getlist('categories', None)
         offset        = int(request.GET.get('offset', 0))
         limit         = int(request.GET.get('limit', 10))
@@ -70,7 +72,7 @@ class AccountBookLogView(APIView):
         }
         
         """
-        가계부의 존재여부 및 유저정보 확인
+        가계부 객체/유저정보 확인
         """
         book, err = GetAccountBook.get_book_n_check_error(account_book_id, user)
         if err:
@@ -87,7 +89,7 @@ class AccountBookLogView(APIView):
             q |= Q(categories__name__icontains = search)
         
         """
-        본인의 가계부 기록 정보 호출
+        유저 본인의 가계부 기록 정보 호출
         """
         if account_book_id:
             q &= Q(books_id = book.id)
@@ -107,6 +109,7 @@ class AccountBookLogView(APIView):
         logs = AccountBookLog.objects\
                              .select_related('categories', 'books')\
                              .filter(q)\
+                             .exclude(status__iexact=status)\
                              .order_by(sort_set[sort])                    
         """
         총지출/총수입 기록 산출
@@ -134,7 +137,7 @@ class AccountBookLogView(APIView):
     )    
     def post(self, request, account_book_id):
         """
-        가계부 기록 생성 기능
+        POST: 가계부 기록 생성 기능
         """
         user = request.user
         
@@ -144,14 +147,14 @@ class AccountBookLogView(APIView):
         account_book_category_id = request.GET.get('categories', None)
         
         """
-        가계부의 존재여부 및 유저정보 확인
+        가계부 객체/유저정보 확인
         """
         book, err = GetAccountBook.get_book_n_check_error(account_book_id, user)
         if err:
             return Response({'detail': err}, status=400)
         
         """
-        가계부 카테고리의 존재여부 및 유저정보 확인
+        가계부 카테고리 객체/유저정보 확인
         """
         category, err = GetAccountBookCategory.get_category_n_check_error(account_book_category_id, user)
         if err:
@@ -177,22 +180,30 @@ class AccountBookLogDetailView(APIView):
     
     permission_classes = [IsAuthenticated]
     
-    log_id = openapi.Parameter('account_book_log_id', openapi.IN_PATH, required=True, type=openapi.TYPE_INTEGER)
+    book_id = openapi.Parameter('account_book_id', openapi.IN_PATH, required=True, type=openapi.TYPE_INTEGER)
+    log_id  = openapi.Parameter('account_book_log_id', openapi.IN_PATH, required=True, type=openapi.TYPE_INTEGER)
 
     @swagger_auto_schema(
         request_body=AccountBookLogDetailSerializer, responses={200: AccountBookLogDetailSerializer},\
-        manual_parameters=[log_id]
+        manual_parameters=[book_id, log_id]
     )
-    def patch(self, request, account_book_log_id):
+    def patch(self, request, account_book_id, account_book_log_id):
         """
-        가계부 기록 수정 기능(가계부 기록 제목/타입/금액/설명 수정)
+        PATCH: 가계부 기록 수정 기능(가계부 기록 제목/타입/금액/설명 수정)
         """
         user = request.user
         
         """
-        가계부 기록의 존재여부 및 유저정보 확인
+        가계부 객체/유저정보 확인
         """
-        log, err = GetAccountBookLog.get_log_n_check_error(account_book_log_id, user)
+        book, err = GetAccountBook.get_book_n_check_error(account_book_id, user)
+        if err:
+            return Response({'detail': err}, status=400)
+        
+        """
+        가계부 기록 객체/유저정보 확인
+        """
+        log, err = GetAccountBookLog.get_log_n_check_error(account_book_log_id, book, user)
         if err:
             return Response({'detail': err}, status=400)
         
@@ -202,19 +213,27 @@ class AccountBookLogDetailView(APIView):
             return Response(serializer.data, status=200)
         return Response(serializer.errors, status=400)
     
-    log_id = openapi.Parameter('account_book_log_id', openapi.IN_PATH, required=True, type=openapi.TYPE_INTEGER)
+    book_id = openapi.Parameter('account_book_id', openapi.IN_PATH, required=True, type=openapi.TYPE_INTEGER)
+    log_id  = openapi.Parameter('account_book_log_id', openapi.IN_PATH, required=True, type=openapi.TYPE_INTEGER)
 
-    @swagger_auto_schema(responses={200: '가계부 기록이 삭제되었습니다.'}, manual_parameters=[log_id])
-    def delete(self, request, account_book_log_id):
+    @swagger_auto_schema(responses={200: '가계부 기록이 삭제되었습니다.'}, manual_parameters=[book_id, log_id])
+    def delete(self, request, account_book_id, account_book_log_id):
         """
-        가계부 기록 삭제 기능
+        DELETE: 가계부 기록 삭제 기능
         """
         user = request.user
         
         """
-        가계부 기록의 존재여부 및 유저정보 확인
+        가계부 객체/유저정보 확인
         """
-        log, err = GetAccountBookLog.get_log_n_check_error(account_book_log_id, user)
+        book, err = GetAccountBook.get_book_n_check_error(account_book_id, user)
+        if err:
+            return Response({'detail': err}, status=400)
+        
+        """
+        가계부 기록 객체/유저정보 확인
+        """
+        log, err = GetAccountBookLog.get_log_n_check_error(account_book_log_id, book, user)
         if err:
             return Response({'detail': err}, status=400)
         

@@ -42,7 +42,7 @@ class AccountBookView(APIView):
     @swagger_auto_schema(responses={200: AccountBookSerializer}, manual_parameters=[sort, search, status, offset, limit])
     def get(self, request):
         """
-        가계부 조회(리스트) 기능
+        GET: 가계부 조회(리스트) 기능
         """
         user = request.user
 
@@ -71,7 +71,7 @@ class AccountBookView(APIView):
             q |= Q(name__icontains = search)
         
         """
-        본인의 가계부 정보 호출
+        유저 본인의 가계부 정보 호출
         """
         if user:
             q &= Q(users = user)
@@ -88,7 +88,7 @@ class AccountBookView(APIView):
     @swagger_auto_schema(request_body=AccountBookSerializer, responses={201: AccountBookSerializer})
     def post(self, request):
         """
-        가계부 생성 기능
+        POST: 가계부 생성 기능
         """
         user = request.user
         
@@ -120,12 +120,12 @@ class AccountBookDetailView(APIView):
     )
     def patch(self, request, account_book_id):
         """
-        가계부 수정 기능(가계부 이름/예산 수정)
+        PATCH: 가계부 수정 기능(가계부 이름/예산 수정)
         """
         user = request.user
         
         """
-        가계부의 존재여부 및 유저정보 확인
+        가계부 객체/유저정보 확인
         """
         book, err = GetAccountBook.get_book_n_check_error(account_book_id, user)
         if err:
@@ -142,12 +142,12 @@ class AccountBookDetailView(APIView):
     @swagger_auto_schema(responses={200: '가계부가 삭제되었습니다.'}, manual_parameters=[book_id])
     def delete(self, request, account_book_id):
         """
-        가계부 삭제 기능
+        DELETE: 가계부 삭제 기능
         """
         user = request.user
         
         """
-        가계부의 존재여부 및 유저정보 확인
+        가계부 객체/유저정보 확인
         """
         book, err = GetAccountBook.get_book_n_check_error(account_book_id, user)
         if err:
@@ -177,12 +177,12 @@ class AccountBookRestoreView(APIView):
     @swagger_auto_schema(responses={200: '가계부가 복구되었습니다.'}, manual_parameters=[book_id])
     def patch(self, request, account_book_id):
         """
-        가계부 복구 기능
+        PATCH: 가계부 복구 기능
         """
         user = request.user
         
         """
-        가계부의 존재여부 및 유저정보 확인
+        가계부 객체/유저정보 확인
         """
         book, err = GetAccountBook.get_book_n_check_error(account_book_id, user)
         if err:

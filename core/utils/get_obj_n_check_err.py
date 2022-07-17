@@ -70,7 +70,7 @@ class GetAccountBookLog:
       - 가계부 기록 객체의 유저정보와 API를 호출한 유저의 정보를 대조
     """
     
-    def get_log_n_check_error(account_book_log_id: int, user: User) -> Tuple[Any, str]:
+    def get_log_n_check_error(account_book_log_id: int, book: AccountBook ,user: User) -> Tuple[Any, str]:
         """
         가계부 기록 객체/에러 확인
         """
@@ -80,6 +80,9 @@ class GetAccountBookLog:
                                 .get(id=account_book_log_id)
         except AccountBookLog.DoesNotExist:
             return None, f'가계부 기록 {account_book_log_id}(id)는 존재하지 않습니다.'
+        
+        if not log.books.id == book.id:
+            return None, '다른 유저의 가계부입니다.'
         
         if not user.nickname == log.books.users.nickname:
             return None, '다른 유저의 가계부 기록입니다.'

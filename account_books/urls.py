@@ -27,6 +27,6 @@ urlpatterns += [
 가계부 기록 url patterns
 """
 urlpatterns += [
-    path('/logs/<int:account_book_id>', AccountBookLogView.as_view()),
-    path('/logs/<int:account_book_log_id>', AccountBookLogDetailView.as_view()),
+    path('/<int:account_book_id>/logs', AccountBookLogView.as_view()),
+    path('/<int:account_book_id>/logs/<int:account_book_log_id>', AccountBookLogDetailView.as_view()),
 ]

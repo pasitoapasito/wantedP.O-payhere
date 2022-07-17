@@ -22,6 +22,9 @@ class UserSignUpView(APIView):
     
     @swagger_auto_schema(request_body=UserSignUpSerializer, responses={201: UserSignUpSerializer})
     def post(self, request):
+        """
+        POST: 유저 회원가입 기능
+        """
         serializer = UserSignUpSerializer(data=request.data)
         
         if serializer.is_valid():
@@ -42,6 +45,9 @@ class UserSignInView(APIView):
     
     @swagger_auto_schema(request_body=UserSignInSerializer, responses={200: UserSignInSchema})
     def post(self, request):
+        """
+        POST: 유저 로그인 기능
+        """
         serializer = UserSignInSerializer(data=request.data)
         
         if serializer.is_valid():
@@ -67,6 +73,9 @@ class UserSignOutView(APIView):
     )
     @swagger_auto_schema(request_body=post_params, responses={200: '유저가 로그아웃 되었습니다.'})
     def post(self, request):
+        """
+        POST: 유저 로그아웃 기능
+        """
         user = request.user
         
         """
