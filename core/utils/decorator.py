@@ -4,6 +4,11 @@ from django.db import connection, reset_queries
 
 
 def query_debugger(func):
+    """
+    Assignee: 김동규
+    
+    detail: 쿼리 디버거 데코레이터
+    """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         reset_queries()

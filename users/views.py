@@ -10,6 +10,14 @@ from users.serializers import UserSignUpSerializer, UserSignInSerializer, UserSi
 
 
 class UserSignUpView(APIView):
+    """
+    Assignee: 김동규
+    
+    request body: email, nickname, password
+    return: json
+    detail: 유저 회원가입 기능입니다.
+    """
+    
     permission_classes = [AllowAny]
     
     @swagger_auto_schema(request_body=UserSignUpSerializer, responses={201: UserSignUpSerializer})
@@ -22,6 +30,14 @@ class UserSignUpView(APIView):
         return Response(serializer.errors, status=400)
     
 class UserSignInView(APIView):
+    """
+    Assignee: 김동규
+    
+    request body: email, password
+    return: json
+    detail: 유저 로그인 기능입니다.
+    """
+    
     permission_classes = [AllowAny]
     
     @swagger_auto_schema(request_body=UserSignInSerializer, responses={200: UserSignInSchema})
@@ -35,6 +51,14 @@ class UserSignInView(APIView):
     
 
 class UserSignOutView(APIView):
+    """
+    Assignee: 김동규
+    
+    request body: refresh token
+    return: json
+    detail: 유저 로그아웃 기능입니다.
+    """
+    
     permission_classes = [IsAuthenticated]
     
     post_params = openapi.Schema(type=openapi.TYPE_OBJECT, properties={
