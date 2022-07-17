@@ -11,6 +11,15 @@ from users.models import User
 
 
 class UserSignUpSerializer(ModelSerializer):
+    """
+    Assignee: 김동규
+    
+    detail:
+      - 유저 데이터 시리얼라이저[POST 기능 유효성 검사]
+      - 패스워드 정규식 표현을 기준으로 패스워드 형식 유효성 검사
+      - 유저정보를 DB에 저장할 때, 패스워드 해싱 후 저장
+    model: User
+    """
     
     def create(self, validated_data):
         password = validated_data.get('password')
@@ -36,6 +45,18 @@ class UserSignUpSerializer(ModelSerializer):
         
         
 class UserSignInSerializer(TokenObtainPairSerializer):
+    """
+    Assignee: 김동규
+    
+    detail:
+      - 유저 데이터 시리얼라이저[POST 기능 유효성 검사]
+      - 이메일 형식에 맞는지 유효성 검사
+      - 패스워드가 DB에 있는 유저 패스워드와 일치하는지 유효성 검사
+      - 이전에 발급된 리프레시 토큰이 있다면 모두 사용 제한
+      - 모든 유효성 검사에 통과하면 액세스 토큰과 리프레시 토큰을 발급
+    model: User
+    """
+    
     email    = serializers.CharField(required=True, max_length=100)
     password = serializers.CharField(required=True, write_only=True, max_length=100)
     
@@ -82,9 +103,12 @@ class UserSignInSerializer(TokenObtainPairSerializer):
         fields = ['email', 'password']
         
 
-"""
-This Serializer is only for Swagger
-"""
 class UserSignInSchema(Serializer):
+    """
+    Assignee: 김동규
+    
+    detail: 유저토큰 스키마 시리얼라이저[only used for swagger]
+    """
+    
     refresh = serializers.CharField(max_length=255)
     access  = serializers.CharField(max_length=255)

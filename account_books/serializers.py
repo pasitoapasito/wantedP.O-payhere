@@ -5,6 +5,13 @@ from account_books.models       import AccountBook, AccountBookCategory, Account
 
 
 class AccountBookSerializer(ModelSerializer):
+    """
+    Assignee: 김동규
+    
+    detail: 가계부 데이터 시리얼라이저[GET/POST 기능 유효성 검사]
+    model: AccountBook
+    """
+    
     nickname = serializers.SerializerMethodField()
     
     def get_nickname(self, obj):
@@ -23,6 +30,13 @@ class AccountBookSerializer(ModelSerializer):
 
 
 class AccountBookDetailSerializer(ModelSerializer):
+    """
+    Assignee: 김동규
+    
+    detail: 가계부 데이터 시리얼라이저[PATCH 기능 유효성 검사]
+    model: AccountBook
+    """
+    
     nickname = serializers.SerializerMethodField()
     
     def get_nickname(self, obj):
@@ -45,6 +59,13 @@ class AccountBookDetailSerializer(ModelSerializer):
         
         
 class AccountBookCategorySerializer(ModelSerializer):
+    """
+    Assignee: 김동규
+    
+    detail: 가계부 카테고리 데이터 시리얼라이저[GET/POST 기능 유효성 검사]
+    model: AccountBookCategory
+    """
+    
     nickname = serializers.SerializerMethodField()
     
     def get_nickname(self, obj):
@@ -63,6 +84,13 @@ class AccountBookCategorySerializer(ModelSerializer):
 
 
 class AccountBookCategoryDetailSerializer(ModelSerializer):
+    """
+    Assignee: 김동규
+    
+    detail: 가계부 카테고리 데이터 시리얼라이저[PATCH 기능 유효성 검사]
+    model: AccountBookCategory
+    """
+    
     nickname = serializers.SerializerMethodField()
     
     def get_nickname(self, obj):
@@ -84,6 +112,13 @@ class AccountBookCategoryDetailSerializer(ModelSerializer):
         
         
 class AccountBookLogSerializer(ModelSerializer):
+    """
+    Assignee: 김동규
+    
+    detail: 가계부 기록 데이터 시리얼라이저[GET/POST 기능 유효성 검사]
+    model: AccountBookLog
+    """
+    
     category    = serializers.SerializerMethodField()
     book        = serializers.SerializerMethodField()
     created_at  = serializers.SerializerMethodField()
@@ -121,6 +156,13 @@ class AccountBookLogSerializer(ModelSerializer):
 
 
 class AccountBookLogDetailSerializer(ModelSerializer):
+    """
+    Assignee: 김동규
+    
+    detail: 가계부 기록 데이터 시리얼라이저[PATCH 기능 유효성 검사]
+    model: AccountBookLog
+    """
+    
     category    = serializers.SerializerMethodField()
     book        = serializers.SerializerMethodField()
     created_at  = serializers.SerializerMethodField()
@@ -166,6 +208,12 @@ class AccountBookLogDetailSerializer(ModelSerializer):
 
 
 class AccountBookLogSchema(serializers.Serializer):
+    """
+    Assignee: 김동규
+    
+    detail: 가계부 기록 스키마 시리얼라이저[only used for swagger]
+    """
+    
     nickname          = serializers.CharField(max_length=100)
     total_income      = serializers.DecimalField(max_digits=10, decimal_places=0)
     total_expenditure = serializers.DecimalField(max_digits=10, decimal_places=0)
