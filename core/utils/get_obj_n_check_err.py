@@ -70,7 +70,7 @@ class GetAccountBookLog:
       - 가계부 기록 객체의 유저정보와 API를 호출한 유저의 정보를 대조
     """
     
-    def get_log_n_check_error(account_book_log_id: int, book: AccountBook ,user: User) -> Tuple[Any, str]:
+    def get_log_n_check_error(account_book_log_id: int, book: AccountBook, user: User) -> Tuple[Any, str]:
         """
         가계부 기록 객체/에러 확인
         """

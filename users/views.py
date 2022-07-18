@@ -1,7 +1,7 @@
 from rest_framework.views            import APIView
 from rest_framework.permissions      import AllowAny, IsAuthenticated
 from rest_framework.response         import Response
-from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
+from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken, RefreshToken
 
 from drf_yasg.utils    import swagger_auto_schema
 from drf_yasg          import openapi
@@ -79,9 +79,17 @@ class UserSignOutView(APIView):
         user = request.user
         
         """
+        해당 유저의 리프레시 토큰 정보를 가져옵니다.
+        """
+        try:
+            refresh = RefreshToken(request.data['refesh_token'])
+        except:
+            return Response({'detail': '유효하지 않거나 만료된 토큰입니다.'}, status=400)
+        
+        """
         해당 유저의 발급된 모든 리프레시 토큰을 사용 제한합니다.
         """
-        for token in OutstandingToken.objects.filter(user=user):
+        for token in OutstandingToken.objects.filter(user_id=refresh['user_id']):
             BlacklistedToken.objects.get_or_create(token=token)
             
         return Response({'message' : f'유저 {user.nickname}이 로그아웃 되었습니다.'}, status=200)
