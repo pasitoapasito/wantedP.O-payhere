@@ -55,7 +55,11 @@ class UserRefreshToken(APITestCase):
                              ), 
                              content_type='application/json'
                        )                
-                        
+        """
+        로그인 API 응답 정보:
+          - a_obj: 액세스 토큰 값
+          - r_obj: 리프레시 토큰 객체
+        """                
         self.a_obj = response.json()['access']
         self.r_obj = OutstandingToken.objects\
                                      .get(token=response.json()['refresh'])
