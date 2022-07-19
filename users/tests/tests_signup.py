@@ -6,8 +6,37 @@ from users.models import User
 
 
 class UserSignUpTest(APITestCase):
+    """
+    Assignee: 김동규
+    
+    Test Case Description
+    
+    1. 케이스 설정 방법
+        1) success test case(1개)
+            - 테스트 성공 시 성공 응답코드 확인
+            - API 응답 데이터가 정상적으로 반환되었는지 확인
+        2) fail test case(14개) 
+            - 테스트 실패 시 에러 응답코드 확인
+            - API 응답 데이터가 정상적으로 반환되었는지 확인
+    3. Parameters
+        1) email
+            - 필수 파라미터 확인
+            - 이메일 형식인지 확인
+            - 이미 존재하는 이메일인지 확인
+        2) nickname
+            - 필수 파라미터 확인
+            - 이미 존재하는 닉네임인지 확인
+        3) password
+            - 필수 파라미터 확인
+            - 패스워드가 8~20자리인지 확인
+            - 패스워드가 최소 1개 이상의 숫자/소문자/대문자/(숫자키)특수문자를 가지는지 확인
+    """
     
     maxDiff = None
+    
+    """
+    테스트 데이터 셋업
+    """
     
     @classmethod
     def setUpTestData(cls):
@@ -17,6 +46,10 @@ class UserSignUpTest(APITestCase):
                 nickname = 'userTest',
                 password = 'Testpassw0rd!'
         )
+    
+    """
+    성공 케이스 테스트코드
+    """
     
     def test_success_user_signup(self):
         data = {
@@ -36,6 +69,10 @@ class UserSignUpTest(APITestCase):
                 'nickname': 'testUser'
             }
         )
+    
+    """
+    실패 케이스 테스트코드
+    """
     
     def test_fail_user_signup_due_to_email_format_validation(self):
         data = {

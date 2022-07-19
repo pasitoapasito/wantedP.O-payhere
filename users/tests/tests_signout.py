@@ -7,8 +7,33 @@ from users.models import User
 
 
 class UserSignOutTest(APITestCase):
+    """
+    Assignee: 김동규
+    
+    Test Case Description
+    
+    1. 케이스 설정 방법
+        1) success test case(1개)
+            - 테스트 성공 시 성공 응답코드 확인
+            - API 응답 데이터가 정상적으로 반환되었는지 확인
+        2) fail test case(3개) 
+            - 테스트 실패 시 에러 응답코드 확인
+            - API 응답 데이터가 정상적으로 반환되었는지 확인
+    3. Parameters
+        1) token(Authentication/Authorization)
+            - 인증/인가에 통과한 유저인지 확인(force_authenticate 메소드 사용)
+        2) refresh token
+            - 필수 파라미터 확인
+            - 유효한 토큰인지 확인
+            - 만료된 토큰인지 확인
+            - API 요청에 사용한 refresh 토큰과 로그아웃으로 blacklist에 포함된 토큰이 일치하는지 확인
+    """
     
     maxDiff = None
+    
+    """
+    테스트 데이터 셋업(유저 회원가입 정보/로그인 정보)
+    """
     
     def setUp(self):
         self.user = User.objects\
@@ -40,6 +65,10 @@ class UserSignOutTest(APITestCase):
         OutstandingToken.objects.all().delete()
         BlacklistedToken.objects.all().delete()
 
+    """
+    성공 케이스 테스트코드
+    """
+    
     def test_success_user_signout(self):            
         data = {
             'refesh_token': self.obj.token
@@ -59,6 +88,10 @@ class UserSignOutTest(APITestCase):
                 'message': '유저 userTest이 로그아웃 되었습니다.'
             }
         )
+    
+    """
+    실패 케이스 테스트코드
+    """
     
     def test_fail_user_signout_due_to_unauthorized_user(self):
         self.client = APIClient()
