@@ -79,7 +79,7 @@ class UserSignInSerializer(TokenObtainPairSerializer):
             raise serializers.ValidationError('detail : 올바른 유저정보를 입력하세요.')
 
         """
-        토큰 발급 전에 이미 발급된 리프레시 토큰은 모두 사용을 제한합니다.
+        토큰 발급 전, 유저의 리프레시 토큰이 이미 존재한다면 모두 사용을 제한합니다.
         """
         for token in OutstandingToken.objects.filter(user=user):
             BlacklistedToken.objects.get_or_create(token=token)
