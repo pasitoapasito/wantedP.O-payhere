@@ -3,10 +3,10 @@ import json
 from rest_framework.test  import APITestCase, APIClient
 
 from users.models         import User
-from account_books.models import AccountBook
+from account_books.models import AccountBookCategory
 
 
-class AccountBookCreateTest(APITestCase):
+class AccountBookCategoryCreateTest(APITestCase):
     """
     Assignee: 김동규
     
@@ -16,7 +16,7 @@ class AccountBookCreateTest(APITestCase):
         1) success test case(1개)
             - 테스트 성공 시 성공 응답코드 확인
             - API 응답 데이터가 정상적으로 반환되었는지 확인
-        2) fail test case(4개) 
+        2) fail test case(2개) 
             - 테스트 실패 시 에러 응답코드 확인
             - API 응답 데이터가 정상적으로 반환되었는지 확인
     3. Parameters
@@ -24,7 +24,6 @@ class AccountBookCreateTest(APITestCase):
             - 인증/인가에 통과한 유저인지 확인(force_authenticate 메소드 사용)
         2) request body(name/budget)
             - 필수 파라미터 확인
-            - 유효한 파라미터인지 확인
     """
     
     maxDiff = None
@@ -48,15 +47,14 @@ class AccountBookCreateTest(APITestCase):
     """
     성공 케이스 테스트코드
     """
-    
-    def test_success_create_account_book(self):
+        
+    def test_success_create_account_book_category(self):
         data = {
-            'name': 'testAccountBook',
-            'budget': 100000
+            'name': 'testAccountBookCategory',
         }
         
         response = self.f_client\
-                       .post('/api/account-books', data=json.dumps(data), content_type='application/json')
+                       .post('/api/account-books/categories', data=json.dumps(data), content_type='application/json')
         
         self.assertEqual(response.status_code, 201)
         self.assertEqual(
@@ -64,8 +62,7 @@ class AccountBookCreateTest(APITestCase):
             {
                 'id'      : 1,
                 'nickname': 'userTest',
-                'name'    : 'testAccountBook',
-                'budget'  : '100000',
+                'name'    : 'testAccountBookCategory',
                 'status'  : 'in_use'
             }
         )
@@ -74,16 +71,15 @@ class AccountBookCreateTest(APITestCase):
     실패 케이스 테스트코드
     """
         
-    def test_fail_create_account_book_due_to_unauthorized_user(self):
+    def test_fail_create_account_book_category_due_to_unauthorized_user(self):
         self.client = APIClient()
         
         data = {
-            'name': 'testAccountBook',
-            'budget': 100000
+            'name': 'testAccountBookCategory',
         }
         
         response = self.client\
-                       .post('/api/account-books', data=json.dumps(data), content_type='application/json')
+                       .post('/api/account-books/categories', data=json.dumps(data), content_type='application/json')
         
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
@@ -92,14 +88,14 @@ class AccountBookCreateTest(APITestCase):
                 'detail': '자격 인증데이터(authentication credentials)가 제공되지 않았습니다.'
             }
         )
-    
-    def test_fail_create_account_book_due_to_name_required(self):
+        
+    def test_fail_create_account_book_category_due_to_name_required(self):
         data = {
-            'budget': 100000
+            'status': 'in_use'
         }
         
         response = self.f_client\
-                       .post('/api/account-books', data=json.dumps(data), content_type='application/json')
+                       .post('/api/account-books/categories', data=json.dumps(data), content_type='application/json')
         
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -110,53 +106,16 @@ class AccountBookCreateTest(APITestCase):
                 ]
             }
         )
-    
-    def test_fail_create_account_book_due_to_budget_required(self):
-        data = {
-            'name': 'testAccountBook'
-        }
-        
-        response = self.f_client\
-                       .post('/api/account-books', data=json.dumps(data), content_type='application/json')
-        
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {
-                'budget': [
-                    '이 필드는 필수 항목입니다.'
-                ]
-            }
-        )
-    
-    def test_fail_create_account_book_due_to_invalid_budget(self):
-        data = {
-            'name'  : 'testAccountBook',
-            'budget': 'testBudget'
-        }
-        
-        response = self.f_client\
-                       .post('/api/account-books', data=json.dumps(data), content_type='application/json')
-        
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {
-                'budget': [
-                    '유효한 숫자를 넣어주세요.'
-                ]
-            }
-        )
-    
 
-class AccountBookListTest(APITestCase):
+
+class AccountBookCategoryListTest(APITestCase):
     """
     Assignee: 김동규
     
     Test Case Description
     
     1. 케이스 설정 방법
-        1) success test case(9개)
+        1) success test case(7개)
             - 테스트 성공 시 성공 응답코드 확인
             - API 응답 데이터가 정상적으로 반환되었는지 확인
         2) fail test case(1개) 
@@ -174,14 +133,12 @@ class AccountBookListTest(APITestCase):
             - sorting
               * up_to_date: 최신순
               * out_of_date: 오래된순
-              * high_budget: 높은 예산순
-              * low_budget: 낮은 예산순
     """
     
     maxDiff = None
     
     """
-    테스트 데이터 셋업(유저/가계부 정보)
+    테스트 데이터 셋업(유저/가계부 카테고리 정보)
     """
     
     @classmethod
@@ -196,43 +153,38 @@ class AccountBookListTest(APITestCase):
         cls.f_client = APIClient()
         cls.f_client.force_authenticate(user=cls.user)
         
-        AccountBook.objects.create(
+        AccountBookCategory.objects.create(
             id     = 1,
             users  = cls.user,
-            name   = 'testAccountBook1',
-            budget = 100000,
+            name   = 'testAccountBookCategory1',
             status = 'in_use'
         )
         
-        AccountBook.objects.create(
+        AccountBookCategory.objects.create(
             id     = 2,
             users  = cls.user,
-            name   = 'testAccountBook2',
-            budget = 200000,
+            name   = 'testAccountBookCategory2',
             status = 'in_use'
         )
         
-        AccountBook.objects.create(
+        AccountBookCategory.objects.create(
             id     = 3,
             users  = cls.user,
-            name   = 'testAccountBook3',
-            budget = 300000,
+            name   = 'testAccountBookCategory3',
             status = 'deleted'
         )
         
-        AccountBook.objects.create(
+        AccountBookCategory.objects.create(
             id     = 4,
             users  = cls.user,
-            name   = 'testAccountBook4',
-            budget = 400000,
+            name   = 'testAccountBookCategory4',
             status = 'in_use'
         )
         
-        AccountBook.objects.create(
+        AccountBookCategory.objects.create(
             id     = 5,
             users  = cls.user,
-            name   = 'testAccountBook5',
-            budget = 500000,
+            name   = 'testAccountBookCategory5',
             status = 'deleted'
         )
 
@@ -240,10 +192,10 @@ class AccountBookListTest(APITestCase):
     성공 케이스 테스트코드
     """
     
-    def test_success_list_account_book_without_any_condition(self):
+    def test_success_list_account_book_category_without_any_condition(self):
         response = self.f_client\
-                       .get('/api/account-books', content_type='application/json')
-                       
+                       .get('/api/account-books/categories', content_type='application/json')
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
@@ -251,31 +203,28 @@ class AccountBookListTest(APITestCase):
                 {
                     'id'      : 4,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook4',
-                    'budget'  : '400000',
+                    'name'    : 'testAccountBookCategory4',
                     'status'  : 'in_use'
                 },
                 {
                     'id'      : 2,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook2',
-                    'budget'  : '200000',
+                    'name'    : 'testAccountBookCategory2',
                     'status'  : 'in_use'
                 },
                 {
                     'id'      : 1,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook1',
-                    'budget'  : '100000',
+                    'name'    : 'testAccountBookCategory1',
                     'status'  : 'in_use'
                 }
             ]
         )
         
-    def test_success_list_account_book_with_search_filter(self):
+    def test_success_list_account_book_category_with_search_filter(self):
         search   = '1'
         response = self.f_client\
-                       .get(f'/api/account-books?search={search}', content_type='application/json')
+                       .get(f'/api/account-books/categories?search={search}', content_type='application/json')
                        
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -284,18 +233,17 @@ class AccountBookListTest(APITestCase):
                 {
                     'id'      : 1,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook1',
-                    'budget'  : '100000',
+                    'name'    : 'testAccountBookCategory1',
                     'status'  : 'in_use'
                 }
             ]
         )
     
-    def test_success_list_account_book_with_deleted_status_filter(self):
+    def test_success_list_account_book_category_with_deleted_status_filter(self):
         status   = 'in_use'
         response = self.f_client\
-                       .get(f'/api/account-books?status={status}', content_type='application/json')
-                       
+                       .get(f'/api/account-books/categories?status={status}', content_type='application/json')
+        
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
@@ -303,25 +251,23 @@ class AccountBookListTest(APITestCase):
                 {
                     'id'      : 5,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook5',
-                    'budget'  : '500000',
+                    'name'    : 'testAccountBookCategory5',
                     'status'  : 'deleted'
                 },
                 {
                     'id'      : 3,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook3',
-                    'budget'  : '300000',
+                    'name'    : 'testAccountBookCategory3',
                     'status'  : 'deleted'
                 }
             ]
         )
     
-    def test_success_list_account_book_with_up_to_date_sorting(self):
-        sort     = 'up_to_date'
+    def test_success_list_account_book_category_with_up_to_date_sorting(self):
+        sort   = 'up_to_date'
         response = self.f_client\
-                       .get(f'/api/account-books?sort={sort}', content_type='application/json')
-                       
+                       .get(f'/api/account-books/categories?sort={sort}', content_type='application/json')
+        
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
@@ -329,32 +275,29 @@ class AccountBookListTest(APITestCase):
                 {
                     'id'      : 4,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook4',
-                    'budget'  : '400000',
+                    'name'    : 'testAccountBookCategory4',
                     'status'  : 'in_use'
                 },
                 {
                     'id'      : 2,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook2',
-                    'budget'  : '200000',
+                    'name'    : 'testAccountBookCategory2',
                     'status'  : 'in_use'
                 },
                 {
                     'id'      : 1,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook1',
-                    'budget'  : '100000',
+                    'name'    : 'testAccountBookCategory1',
                     'status'  : 'in_use'
                 }
             ]
         )
     
-    def test_success_list_account_book_with_out_of_date_sorting(self):
-        sort     = 'out_of_date'
+    def test_success_list_account_book_category_with_out_of_date_sorting(self):
+        sort   = 'out_of_date'
         response = self.f_client\
-                       .get(f'/api/account-books?sort={sort}', content_type='application/json')
-                       
+                       .get(f'/api/account-books/categories?sort={sort}', content_type='application/json')
+        
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
@@ -362,99 +305,30 @@ class AccountBookListTest(APITestCase):
                 {
                     'id'      : 1,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook1',
-                    'budget'  : '100000',
+                    'name'    : 'testAccountBookCategory1',
                     'status'  : 'in_use'
                 },
                 {
                     'id'      : 2,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook2',
-                    'budget'  : '200000',
+                    'name'    : 'testAccountBookCategory2',
                     'status'  : 'in_use'
                 },
                 {
                     'id'      : 4,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook4',
-                    'budget'  : '400000',
+                    'name'    : 'testAccountBookCategory4',
                     'status'  : 'in_use'
                 }
             ]
         )
     
-    def test_success_list_account_book_with_high_budget_sorting(self):
-        sort     = 'high_budget'
-        response = self.f_client\
-                       .get(f'/api/account-books?sort={sort}', content_type='application/json')
-                       
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            [
-                {
-                    'id'      : 4,
-                    'nickname': 'userTest',
-                    'name'    : 'testAccountBook4',
-                    'budget'  : '400000',
-                    'status'  : 'in_use'
-                },
-                {
-                    'id'      : 2,
-                    'nickname': 'userTest',
-                    'name'    : 'testAccountBook2',
-                    'budget'  : '200000',
-                    'status'  : 'in_use'
-                },
-                {
-                    'id'      : 1,
-                    'nickname': 'userTest',
-                    'name'    : 'testAccountBook1',
-                    'budget'  : '100000',
-                    'status'  : 'in_use'
-                }
-            ]
-        )
-    
-    def test_success_list_account_book_with_low_budget_sorting(self):
-        sort     = 'low_budget'
-        response = self.f_client\
-                       .get(f'/api/account-books?sort={sort}', content_type='application/json')
-                       
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            [
-                {
-                    'id'      : 1,
-                    'nickname': 'userTest',
-                    'name'    : 'testAccountBook1',
-                    'budget'  : '100000',
-                    'status'  : 'in_use'
-                },
-                {
-                    'id'      : 2,
-                    'nickname': 'userTest',
-                    'name'    : 'testAccountBook2',
-                    'budget'  : '200000',
-                    'status'  : 'in_use'
-                },
-                {
-                    'id'      : 4,
-                    'nickname': 'userTest',
-                    'name'    : 'testAccountBook4',
-                    'budget'  : '400000',
-                    'status'  : 'in_use'
-                }
-            ]
-        )
-    
-    def test_success_list_account_book_with_offset_limit_in_data_range(self):
+    def test_success_list_account_book_category_with_offset_limit_in_data_range(self):
         offset   = '0'
         limit    = '2'
         response = self.f_client\
-                       .get(f'/api/account-books?offset={offset}&limit={limit}', content_type='application/json')
-                       
+                       .get(f'/api/account-books/categories?offset={offset}&limit={limit}', content_type='application/json')
+    
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
@@ -462,39 +336,37 @@ class AccountBookListTest(APITestCase):
                 {
                     'id'      : 4,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook4',
-                    'budget'  : '400000',
+                    'name'    : 'testAccountBookCategory4',
                     'status'  : 'in_use'
                 },
                 {
                     'id'      : 2,
                     'nickname': 'userTest',
-                    'name'    : 'testAccountBook2',
-                    'budget'  : '200000',
+                    'name'    : 'testAccountBookCategory2',
                     'status'  : 'in_use'
                 }
             ]
         )
     
-    def test_success_list_account_book_with_offset_limit_out_of_data_range(self):
+    def test_success_list_account_book_category_with_offset_limit_out_of_data_range(self):
         offset   = '3'
         limit    = '2'
         response = self.f_client\
-                       .get(f'/api/account-books?offset={offset}&limit={limit}', content_type='application/json')
-                       
+                       .get(f'/api/account-books/categories?offset={offset}&limit={limit}', content_type='application/json')
+    
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), [])
     
     """
     실패 케이스 테스트코드
     """
-        
-    def test_fail_list_account_book_due_to_unauthorized_user(self):
+    
+    def test_fail_list_account_book_category_due_to_unauthorized_user(self):
         self.client = APIClient()
         
         response = self.client\
-                       .get('/api/account-books', content_type='application/json')
-        
+                       .get(f'/api/account-books/categories', content_type='application/json')
+                       
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response.json(),
@@ -504,7 +376,7 @@ class AccountBookListTest(APITestCase):
         )
     
 
-class AccountBookUpdateTest(APITestCase):
+class AccountBookCategoryUpdateTest(APITestCase):
     """
     Assignee: 김동규
     
@@ -520,17 +392,17 @@ class AccountBookUpdateTest(APITestCase):
     3. Parameters
         1) token(Authentication/Authorization)
             - 인증/인가에 통과한 유저인지 확인(force_authenticate 메소드 사용)
-        2) book obj
-            - 가계부 존재여부 확인(존재하지 않는 가계부는 수정할 수 없음)
-            - 가계부 유저정보 확인(다른 유저의 가계부는 수정할 수 없음)
+        2) category obj
+            - 가계부 카테고리 존재여부 확인(존재하지 않는 카테고리는 수정할 수 없음)
+            - 가계부 카테고리 유저정보 확인(다른 유저의 카테고리는 수정할 수 없음)
     """
     
     maxDiff = None
     
     """
-    테스트 데이터 셋업(유저/가계부 정보)
+    테스트 데이터 셋업(유저/가계부 카테고리 정보)
     """
-    
+
     def setUp(self):
         self.f_user = User.objects\
                           .create_user(
@@ -549,52 +421,48 @@ class AccountBookUpdateTest(APITestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.f_user)
         
-        AccountBook.objects.create(
+        AccountBookCategory.objects.create(
             id     = 1,
             users  = self.f_user,
-            name   = 'testAccountBook1',
-            budget = 100000,
+            name   = 'testAccountBookCategory1',
             status = 'in_use'
         )
         
-        AccountBook.objects.create(
+        AccountBookCategory.objects.create(
             id     = 2,
             users  = self.s_user,
-            name   = 'testAccountBook2',
-            budget = 200000,
+            name   = 'testAccountBookCategory2',
             status = 'in_use'
         )
     
     """
     테스트 데이터 삭제
     """
-    
+       
     def tearDown(self):
         User.objects.all().delete()
-        AccountBook.objects.all().delete()
-        
+        AccountBookCategory.objects.all().delete()
+    
     """
     성공 케이스 테스트코드
     """
-    
-    def test_success_update_account_book(self):
+        
+    def test_success_update_account_book_category(self):
         data = {
-            'name'  : 'testAccountBook',
-            'budget': 99999,
+            'name'  : 'testAccountBookCategory',
             'status': 'in_use'
         }
         
         response = self.client\
-                       .patch('/api/account-books/1', data=json.dumps(data), content_type='application/json')
-        
+                       .patch('/api/account-books/categories/1', data=json.dumps(data), content_type='application/json')
+    
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
                 'id'      : 1,
                 'nickname': 'userTest',
-                'name'    : 'testAccountBook',
-                'budget'  : '99999',
+                'name'    : 'testAccountBookCategory',
                 'status'  : 'in_use'
             }
         )
@@ -603,18 +471,17 @@ class AccountBookUpdateTest(APITestCase):
     실패 케이스 테스트코드
     """
         
-    def test_fail_update_account_book_due_to_unauthorized_user(self):
+    def test_fail_update_account_book_category_due_to_unauthorized_user(self):
         self.client = APIClient()
         
         data = {
-            'name'  : 'testAccountBook',
-            'budget': 99999,
+            'name'  : 'testAccountBookCategory',
             'status': 'in_use'
         }
         
         response = self.client\
-                       .patch('/api/account-books/1', data=json.dumps(data), content_type='application/json')
-        
+                       .patch('/api/account-books/categories/1', data=json.dumps(data), content_type='application/json')
+                       
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response.json(),
@@ -623,44 +490,42 @@ class AccountBookUpdateTest(APITestCase):
             }
         )
     
-    def test_fail_update_account_book_due_to_not_existed_account_book(self):
+    def test_fail_update_account_book_category_due_to_not_existed_category(self):
         data = {
-            'name'  : 'testAccountBook',
-            'budget': 99999,
+            'name'  : 'testAccountBookCategory',
             'status': 'in_use'
         }
         
         response = self.client\
-                       .patch('/api/account-books/10', data=json.dumps(data), content_type='application/json')
-        
+                       .patch('/api/account-books/categories/10', data=json.dumps(data), content_type='application/json')
+                       
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
             {
-                'detail': '가계부 10(id)는 존재하지 않습니다.'
+                'detail': '가계부 카테고리 10(id)는 존재하지 않습니다.'
             }
         )
     
-    def test_fail_update_account_book_due_to_not_own_account_book(self):
+    def test_fail_update_account_book_category_due_to_not_own_category(self):
         data = {
-            'name'  : 'testAccountBook',
-            'budget': 99999,
+            'name'  : 'testAccountBookCategory',
             'status': 'in_use'
         }
         
         response = self.client\
-                       .patch('/api/account-books/2', data=json.dumps(data), content_type='application/json')
-        
+                       .patch('/api/account-books/categories/2', data=json.dumps(data), content_type='application/json')
+                       
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
             {
-                'detail': '다른 유저의 가계부입니다.'
+                'detail': '다른 유저의 가계부 카테고리입니다.'
             }
         )
-        
 
-class AccountBookDeleteTest(APITestCase):
+
+class AccountBookCategoryDeleteTest(APITestCase):
     """
     Assignee: 김동규
     
@@ -676,16 +541,162 @@ class AccountBookDeleteTest(APITestCase):
     3. Parameters
         1) token(Authentication/Authorization)
             - 인증/인가에 통과한 유저인지 확인(force_authenticate 메소드 사용)
-        2) book obj
-            - 가계부 존재여부 확인(존재하지 않는 가계부는 삭제할 수 없음)
-            - 가계부 유저정보 확인(다른 유저의 가계부는 삭제할 수 없음)
-            - 가계부 상태정보 확인(이미 삭제된 가계부는 다시 삭제할 수 없음)
+        2) category obj
+            - 가계부 카테고리 존재여부 확인(존재하지 않는 카테고리는 삭제할 수 없음)
+            - 가계부 카테고리 유저정보 확인(다른 유저의 카테고리는 삭제할 수 없음)
+            - 가계부 카테고리 상태정보 확인(이미 삭제된 카테고리는 다시 삭제할 수 없음)
     """
     
     maxDiff = None
     
     """
-    테스트 데이터 셋업(유저/가계부 정보)
+    테스트 데이터 셋업(유저/가계부 카테고리 정보)
+    """
+
+    def setUp(self):
+        self.f_user = User.objects\
+                          .create_user(
+                              email    = 'userTest@example.com',
+                              nickname = 'userTest',
+                              password = 'Testpassw0rd!'
+                          )
+
+        self.s_user = User.objects\
+                          .create_user(
+                              email    = 'testUser@example.com',
+                              nickname = 'testUser',
+                              password = 'Testpassw3rd!'
+                          )
+                        
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.f_user)
+        
+        AccountBookCategory.objects.create(
+            id     = 1,
+            users  = self.f_user,
+            name   = 'testAccountBookCategory1',
+            status = 'in_use'
+        )
+        
+        AccountBookCategory.objects.create(
+            id     = 2,
+            users  = self.s_user,
+            name   = 'testAccountBookCategory2',
+            status = 'in_use'
+        )
+        
+        AccountBookCategory.objects.create(
+            id     = 3,
+            users  = self.f_user,
+            name   = 'testAccountBookCategory3',
+            status = 'deleted'
+        )
+    
+    """
+    테스트 데이터 삭제
+    """   
+        
+    def tearDown(self):
+        User.objects.all().delete()
+        AccountBookCategory.objects.all().delete()
+    
+    """
+    성공 케이스 테스트코드
+    """
+        
+    def test_success_delete_account_book_category(self):
+        response = self.client\
+                       .delete('/api/account-books/categories/1', content_type='application/json')
+                       
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'detail': '가계부 카테고리 1(id)가 삭제되었습니다.'
+            }
+        )
+
+    """
+    실패 케이스 테스트코드
+    """
+    
+    def test_fail_delete_account_book_category_due_to_unauthorized_user(self):
+        self.client = APIClient()
+        
+        response = self.client\
+                       .delete('/api/account-books/categories/1', content_type='application/json')
+                       
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(
+            response.json(),
+            {
+                'detail': '자격 인증데이터(authentication credentials)가 제공되지 않았습니다.'
+            }
+        )
+        
+    def test_fail_delete_account_book_category_due_to_not_existed_category(self):
+        response = self.client\
+                       .delete('/api/account-books/categories/10', content_type='application/json')
+                       
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {
+                'detail': '가계부 카테고리 10(id)는 존재하지 않습니다.'
+            }
+        )
+    
+    def test_fail_delete_account_book_category_due_to_not_own_category(self):
+        response = self.client\
+                       .delete('/api/account-books/categories/2', content_type='application/json')
+                       
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {
+                'detail': '다른 유저의 가계부 카테고리입니다.'
+            }
+        )
+        
+    def test_fail_delete_account_book_category_due_to_already_deleted_category(self):
+        response = self.client\
+                       .delete('/api/account-books/categories/3', content_type='application/json')
+                       
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {
+                'detail': '가계부 카테고리 3(id)는 이미 삭제된 상태입니다.'
+            }
+        )
+
+
+class AccountBookCategoryRestoreTest(APITestCase):
+    """
+    Assignee: 김동규
+    
+    Test Case Description
+    
+    1. 케이스 설정 방법
+        1) success test case(1개)
+            - 테스트 성공 시 성공 응답코드 확인
+            - API 응답 데이터가 정상적으로 반환되었는지 확인
+        2) fail test case(4개) 
+            - 테스트 실패 시 에러 응답코드 확인
+            - API 응답 데이터가 정상적으로 반환되었는지 확인
+    3. Parameters
+        1) token(Authentication/Authorization)
+            - 인증/인가에 통과한 유저인지 확인(force_authenticate 메소드 사용)
+        2) category obj
+            - 가계부 카테고리 존재여부 확인(존재하지 않는 카테고리는 복구할 수 없음)
+            - 가계부 카테고리 유저정보 확인(다른 유저의 카테고리는 복구할 수 없음)
+            - 가계부 카테고리 상태정보 확인(이미 복구된 카테고리는 다시 복구할 수 없음)
+    """
+    
+    maxDiff = None
+    
+    """
+    테스트 데이터 셋업(유저/가계부 카테고리 정보)
     """
     
     def setUp(self):
@@ -706,64 +717,61 @@ class AccountBookDeleteTest(APITestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.f_user)
         
-        AccountBook.objects.create(
+        AccountBookCategory.objects.create(
             id     = 1,
             users  = self.f_user,
-            name   = 'testAccountBook1',
-            budget = 100000,
-            status = 'in_use'
+            name   = 'testAccountBookCategory1',
+            status = 'deleted'
         )
         
-        AccountBook.objects.create(
+        AccountBookCategory.objects.create(
             id     = 2,
             users  = self.s_user,
-            name   = 'testAccountBook2',
-            budget = 200000,
-            status = 'in_use'
+            name   = 'testAccountBookCategory2',
+            status = 'deleted'
         )
         
-        AccountBook.objects.create(
+        AccountBookCategory.objects.create(
             id     = 3,
             users  = self.f_user,
-            name   = 'testAccountBook3',
-            budget = 300000,
-            status = 'deleted'
+            name   = 'testAccountBookCategory3',
+            status = 'in_use'
         )
     
     """
     테스트 데이터 삭제
-    """    
-    
+    """
+        
     def tearDown(self):
         User.objects.all().delete()
-        AccountBook.objects.all().delete()
+        AccountBookCategory.objects.all().delete()
     
     """
     성공 케이스 테스트코드
     """
         
-    def test_success_delete_acccount_book(self):
+    def test_success_restore_account_book_category(self):
         response = self.client\
-                       .delete('/api/account-books/1', content_type='application/json')
-    
+                       .patch('/api/account-books/categories/1/restore', content_type='application/json')
+        
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
-                'detail': '가계부 1(id)가 삭제되었습니다.'
+                'detail': '가계부 카테고리 1(id)가 복구되었습니다.'
             }
         )
     
     """
     실패 케이스 테스트코드
     """
-        
-    def test_fail_delete_account_book_due_to_unauthorized_user(self):
+    
+    def test_fail_restore_account_book_category_due_to_unauthorized_user(self):
         self.client = APIClient()
         
         response = self.client\
-                       .delete('/api/account-books/1', content_type='application/json')
-    
+                       .patch('/api/account-books/categories/1/restore', content_type='application/json')
+        
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
             response.json(),
@@ -771,188 +779,39 @@ class AccountBookDeleteTest(APITestCase):
                 'detail': '자격 인증데이터(authentication credentials)가 제공되지 않았습니다.'
             }
         )
-    
-    def test_fail_delete_account_book_due_to_not_existed_account_book(self):
+        
+    def test_fail_restore_account_book_category_due_to_not_existed_category(self):
         response = self.client\
-                       .delete('/api/account-books/10', content_type='application/json')
-    
+                       .patch('/api/account-books/categories/10/restore', content_type='application/json')
+        
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
             {
-                'detail': '가계부 10(id)는 존재하지 않습니다.'
+                'detail': '가계부 카테고리 10(id)는 존재하지 않습니다.'
             }
         )
     
-    def test_fail_delete_account_book_due_to_not_own_account_book(self):
+    def test_fail_restore_account_book_category_due_to_not_own_category(self):
         response = self.client\
-                       .delete('/api/account-books/2', content_type='application/json')
-    
+                       .patch('/api/account-books/categories/2/restore', content_type='application/json')
+        
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
             {
-                'detail': '다른 유저의 가계부입니다.'
+                'detail': '다른 유저의 가계부 카테고리입니다.'
             }
         )
     
-    def test_fail_delete_account_book_due_to_already_deleted_account_book(self):
+    def test_fail_restore_account_book_category_due_to_already_in_use_category(self):
         response = self.client\
-                       .delete('/api/account-books/3', content_type='application/json')
-    
+                       .patch('/api/account-books/categories/3/restore', content_type='application/json')
+        
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
             {
-                'detail': '가계부 3(id)는 이미 삭제된 상태입니다.'
-            }
-        )
-        
-
-class AccountBookRestoreTest(APITestCase):
-    """
-    Assignee: 김동규
-    
-    Test Case Description
-    
-    1. 케이스 설정 방법
-        1) success test case(1개)
-            - 테스트 성공 시 성공 응답코드 확인
-            - API 응답 데이터가 정상적으로 반환되었는지 확인
-        2) fail test case(4개) 
-            - 테스트 실패 시 에러 응답코드 확인
-            - API 응답 데이터가 정상적으로 반환되었는지 확인
-    3. Parameters
-        1) token(Authentication/Authorization)
-            - 인증/인가에 통과한 유저인지 확인(force_authenticate 메소드 사용)
-        2) book obj
-            - 가계부 존재여부 확인(존재하지 않는 가계부는 복구할 수 없음)
-            - 가계부 유저정보 확인(다른 유저의 가계부는 복구할 수 없음)
-            - 가계부 상태정보 확인(이미 복구된 가계부는 다시 복구할 수 없음)
-    """
-    
-    maxDiff = None
-    
-    """
-    테스트 데이터 셋업(유저/가계부 정보)
-    """
-    
-    def setUp(self):
-        self.f_user = User.objects\
-                          .create_user(
-                              email    = 'userTest@example.com',
-                              nickname = 'userTest',
-                              password = 'Testpassw0rd!'
-                          )
-
-        self.s_user = User.objects\
-                          .create_user(
-                              email    = 'testUser@example.com',
-                              nickname = 'testUser',
-                              password = 'Testpassw3rd!'
-                          )
-                        
-        self.client = APIClient()
-        self.client.force_authenticate(user=self.f_user)
-        
-        AccountBook.objects.create(
-            id     = 1,
-            users  = self.f_user,
-            name   = 'testAccountBook1',
-            budget = 100000,
-            status = 'deleted'
-        )
-        
-        AccountBook.objects.create(
-            id     = 2,
-            users  = self.s_user,
-            name   = 'testAccountBook2',
-            budget = 200000,
-            status = 'deleted'
-        )
-        
-        AccountBook.objects.create(
-            id     = 3,
-            users  = self.f_user,
-            name   = 'testAccountBook3',
-            budget = 300000,
-            status = 'in_use'
-        )
-        
-    """
-    테스트 데이터 삭제
-    """
-    
-    def tearDown(self):
-        User.objects.all().delete()
-        AccountBook.objects.all().delete()
-    
-    """
-    성공 케이스 테스트코드
-    """
-    
-    def test_success_restore_account_book(self):
-        response = self.client\
-                       .patch('/api/account-books/1/restore', content_type='application/json')
-    
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            {
-                'detail': '가계부 1(id)가 복구되었습니다.'
-            }
-        )
-    
-    """
-    실패 케이스 테스트코드
-    """
-        
-    def test_fail_restore_account_book_due_to_unauthorized_user(self):
-        self.client = APIClient()
-        
-        response = self.client\
-                       .patch('/api/account-books/1/restore', content_type='application/json')
-    
-        self.assertEqual(response.status_code, 401)
-        self.assertEqual(
-            response.json(),
-            {
-                'detail': '자격 인증데이터(authentication credentials)가 제공되지 않았습니다.'
-            }
-        )
-    
-    def test_fail_restore_account_book_due_to_not_existed_account_book(self):
-        response = self.client\
-                       .patch('/api/account-books/10/restore', content_type='application/json')
-    
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {
-                'detail': '가계부 10(id)는 존재하지 않습니다.'
-            }
-        )
-    
-    def test_fail_restore_account_book_due_to_not_own_account_book(self):
-        response = self.client\
-                       .patch('/api/account-books/2/restore', content_type='application/json')
-    
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {
-                'detail': '다른 유저의 가계부입니다.'
-            }
-        )
-    
-    def test_fail_restore_account_book_due_to_already_in_use_account_book(self):
-        response = self.client\
-                       .patch('/api/account-books/3/restore', content_type='application/json')
-    
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {
-                'detail': '가계부 3(id)는 이미 사용중입니다.'
+                'detail': '가계부 카테고리 3(id)는 이미 사용중입니다.'
             }
         )
