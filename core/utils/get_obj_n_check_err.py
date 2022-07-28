@@ -81,7 +81,7 @@ class GetAccountBookLog:
         except AccountBookLog.DoesNotExist:
             return None, f'가계부 기록 {account_book_log_id}(id)는 존재하지 않습니다.'
         
-        if not log.books.id == book.id:
+        if not user.nickname == book.users.nickname:
             return None, '다른 유저의 가계부입니다.'
         
         if not user.nickname == log.books.users.nickname:

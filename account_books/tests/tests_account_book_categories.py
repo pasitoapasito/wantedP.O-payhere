@@ -22,7 +22,7 @@ class AccountBookCategoryCreateTest(APITestCase):
     3. Parameters
         1) token(Authentication/Authorization)
             - 인증/인가에 통과한 유저인지 확인(force_authenticate 메소드 사용)
-        2) request body(name/budget)
+        2) request body(name)
             - 필수 파라미터 확인
     """
     
@@ -131,7 +131,7 @@ class AccountBookCategoryListTest(APITestCase):
               * in data range: 데이터 범위내(해당 개수의 데이터 반환)
               * out of data range: 데이터 범위밖(0개의 데이터 반환)
             - sorting
-              * up_to_date: 최신순
+              * up_to_date : 최신순
               * out_of_date: 오래된순
     """
     
@@ -264,7 +264,7 @@ class AccountBookCategoryListTest(APITestCase):
         )
     
     def test_success_list_account_book_category_with_up_to_date_sorting(self):
-        sort   = 'up_to_date'
+        sort     = 'up_to_date'
         response = self.f_client\
                        .get(f'/api/account-books/categories?sort={sort}', content_type='application/json')
         
@@ -294,7 +294,7 @@ class AccountBookCategoryListTest(APITestCase):
         )
     
     def test_success_list_account_book_category_with_out_of_date_sorting(self):
-        sort   = 'out_of_date'
+        sort     = 'out_of_date'
         response = self.f_client\
                        .get(f'/api/account-books/categories?sort={sort}', content_type='application/json')
         
