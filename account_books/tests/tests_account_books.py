@@ -30,7 +30,7 @@ class AccountBookCreateTest(APITestCase):
     maxDiff = None
     
     """
-    테스트 데이터 셋업(유저 정보)
+    테스트 데이터 셋업(유저/가계부 정보)
     """
     
     @classmethod
@@ -44,6 +44,22 @@ class AccountBookCreateTest(APITestCase):
                        
         cls.f_client = APIClient()
         cls.f_client.force_authenticate(user=cls.user)
+        
+        AccountBook.objects.create(
+            id     = 1,
+            users  = cls.user,
+            name   = 'testAccountBook1',
+            budget = 100000,
+            status = 'in_use'
+        )
+        
+        AccountBook.objects.create(
+            id     = 2,
+            users  = cls.user,
+            name   = 'testAccountBook2',
+            budget = 100000,
+            status = 'in_use'
+        )
     
     """
     성공 케이스 테스트코드
@@ -51,7 +67,7 @@ class AccountBookCreateTest(APITestCase):
     
     def test_success_create_account_book(self):
         data = {
-            'name': 'testAccountBook',
+            'name': 'testAccountBook3',
             'budget': 100000
         }
         
@@ -62,9 +78,9 @@ class AccountBookCreateTest(APITestCase):
         self.assertEqual(
             response.json(),
             {
-                'id'      : 1,
+                'id'      : 3,
                 'nickname': 'userTest',
-                'name'    : 'testAccountBook',
+                'name'    : 'testAccountBook3',
                 'budget'  : '100000',
                 'status'  : 'in_use'
             }
@@ -172,10 +188,10 @@ class AccountBookListTest(APITestCase):
               * in data range: 데이터 범위내(해당 개수의 데이터 반환)
               * out of data range: 데이터 범위밖(0개의 데이터 반환)
             - sorting
-              * up_to_date: 최신순
+              * up_to_date : 최신순
               * out_of_date: 오래된순
               * high_budget: 높은 예산순
-              * low_budget: 낮은 예산순
+              * low_budget : 낮은 예산순
     """
     
     maxDiff = None
@@ -623,7 +639,7 @@ class AccountBookUpdateTest(APITestCase):
             }
         )
     
-    def test_fail_update_account_book_due_to_not_existed_account_book(self):
+    def test_fail_update_account_book_due_to_not_existed_book(self):
         data = {
             'name'  : 'testAccountBook',
             'budget': 99999,
@@ -641,7 +657,7 @@ class AccountBookUpdateTest(APITestCase):
             }
         )
     
-    def test_fail_update_account_book_due_to_not_own_account_book(self):
+    def test_fail_update_account_book_due_to_not_own_book(self):
         data = {
             'name'  : 'testAccountBook',
             'budget': 99999,
@@ -772,7 +788,7 @@ class AccountBookDeleteTest(APITestCase):
             }
         )
     
-    def test_fail_delete_account_book_due_to_not_existed_account_book(self):
+    def test_fail_delete_account_book_due_to_not_existed_book(self):
         response = self.client\
                        .delete('/api/account-books/10', content_type='application/json')
     
@@ -784,7 +800,7 @@ class AccountBookDeleteTest(APITestCase):
             }
         )
     
-    def test_fail_delete_account_book_due_to_not_own_account_book(self):
+    def test_fail_delete_account_book_due_to_not_own_book(self):
         response = self.client\
                        .delete('/api/account-books/2', content_type='application/json')
     
@@ -796,7 +812,7 @@ class AccountBookDeleteTest(APITestCase):
             }
         )
     
-    def test_fail_delete_account_book_due_to_already_deleted_account_book(self):
+    def test_fail_delete_account_book_due_to_already_deleted_book(self):
         response = self.client\
                        .delete('/api/account-books/3', content_type='application/json')
     
@@ -921,7 +937,7 @@ class AccountBookRestoreTest(APITestCase):
             }
         )
     
-    def test_fail_restore_account_book_due_to_not_existed_account_book(self):
+    def test_fail_restore_account_book_due_to_not_existed_book(self):
         response = self.client\
                        .patch('/api/account-books/10/restore', content_type='application/json')
     
@@ -933,7 +949,7 @@ class AccountBookRestoreTest(APITestCase):
             }
         )
     
-    def test_fail_restore_account_book_due_to_not_own_account_book(self):
+    def test_fail_restore_account_book_due_to_not_own_book(self):
         response = self.client\
                        .patch('/api/account-books/2/restore', content_type='application/json')
     
@@ -945,7 +961,7 @@ class AccountBookRestoreTest(APITestCase):
             }
         )
     
-    def test_fail_restore_account_book_due_to_already_in_use_account_book(self):
+    def test_fail_restore_account_book_due_to_already_in_use_book(self):
         response = self.client\
                        .patch('/api/account-books/3/restore', content_type='application/json')
     

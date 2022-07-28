@@ -132,7 +132,7 @@ class AccountBookLogView(APIView):
     book_id    = openapi.Parameter('account_book_id', openapi.IN_PATH, required=True, type=openapi.TYPE_INTEGER)
     
     @swagger_auto_schema(
-        request_body=AccountBookLogSerializer, responses={200: AccountBookLogSerializer},\
+        request_body=AccountBookLogSerializer, responses={201: AccountBookLogSerializer},\
         manual_parameters=[book_id, categories]
     )    
     def post(self, request, account_book_id):
@@ -163,7 +163,7 @@ class AccountBookLogView(APIView):
         serializer = AccountBookLogSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(books=book, categories=category)
-            return Response(serializer.data, status=200)
+            return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
     
 
