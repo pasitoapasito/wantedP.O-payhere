@@ -282,65 +282,47 @@
 
 > **API Docs**
 - #### 🌈 API 명세서
-  |ID|Feature|Method|URL|Description|
-  |---|----------|----|----|----|
-  |1|유저 회원가입|POST|api/users/signup|유저 회원가입 기능입니다.|
-  |2|유저 로그인|POST|api/users/signin|유저 로그인 기능입니다.|
-  |3|유저 로그아웃|POST|api/users/signout|유저 로그아웃 기능입니다.|
-  |4|유저 토큰 재발급|POST|api/users/token/refresh|유저 토큰 재발급 기능입니다.|
-  |5|게시글 생성|POST|api/posts|본인의 게시글을 생성합니다.|
-  |6|게시글 리스트|GET|api/posts|모든 게시글 리스트 정보를 조회합니다.|
-  |7|게시글 상세|GET|api/posts/\<int:post_id\>|모든 게시글 상세 정보를 조회합니다.|
-  |8|게시글 수정|PATCH|api/posts/\<int:post_id\>|본인의 게시글을 수정합니다.|
-  |9|게시글 삭제|DELETE|api/posts/\<int:post_id\>|본인의 게시글을 삭제합니다.|
-  |10|게시글 복구|PATCH|api/posts/\<int:post_id\>/restore|본인의 게시글을 복구합니다.|
-  |11|게시글 좋아요|POST|api/posts/\<int:post_id\>/like|본인 게시글 포함, 모든 게시글의 좋아요 기능을 사용합니다.|
+  |ID|Feature|Method|URL|
+  |---|----------|----|----|
+  |1|사용자 회원가입|POST|api/users/signup|
+  |2|사용자 로그인|POST|api/users/signin|
+  |3|사용자 로그아웃|POST|api/users/signout|
+  |4|사용자 토큰 재발급|POST|api/users/token/refresh|
+  |5|가계부 생성|POST|api/account-books|
+  |6|가계부 리스트|GET|api/account-books|
+  |7|게시글 수정|PATCH|api/account-books/\<int:account_book_id\>|
+  |8|게시글 삭제|DELETE|api/account-books/\<int:account_book_id\>|
+  |9|게시글 복구|PATCH|api/account-books/\<int:account_book_id\>/restore|
+  |10|카테고리 생성|POST|api/account-books/categories|
+  |11|카테고리 리스트|GET|api/account-books/categories|
+  |12|카테고리 수정|PATCH|api/account-books/categories/\<int:account_book_category_id\>|
+  |13|카테고리 삭제|DELETE|api/account-books/categories/\<int:account_book_category_id\>|
+  |14|카테고리 복구|PATCH|api/account-books/categories/\<int:account_book_category_id\>/restore|
+  |15|가계부 기록 생성|POST|api/account-books/\<int:account_book_id\>/logs|
+  |16|가계부 기록 리스트|GET|api/account-books/\<int:account_book_id\>/logs|
+  |17|게시글 기록 수정|PATCH|api/account-books/\<int:account_book_id\>/logs/\<int:account_book_log_id\>|
+  |18|게시글 기록 삭제|DELETE|api/account-books/\<int:account_book_id\>/logs/\<int:account_book_log_id\>|
+  
   
 - #### ✨ Swagger UI
-  #### ```✔️ 유저 회원가입``` 
+  #### ```✔️ 사용자 회원가입``` 
   <img width="1000px" alt="스크린샷 2022-07-25 14 06 34" src="https://user-images.githubusercontent.com/89829943/180702579-5f394884-a7a6-4db7-9658-fe32022c9ced.png">
   <img width="1000px" alt="스크린샷 2022-07-25 14 07 09" src="https://user-images.githubusercontent.com/89829943/180702609-1b2c200c-0f8b-467e-ae44-a3af311a2640.png">
   
-  #### ```✔️ 유저 로그인```
+  #### ```✔️ 사용자 로그인```
   <img width="1000px" alt="스크린샷 2022-07-25 14 14 37" src="https://user-images.githubusercontent.com/89829943/180703475-55f6b39e-1d12-4a0d-bfc8-83182b418fb9.png">
   <img width="1000px" alt="스크린샷 2022-07-25 14 15 16" src="https://user-images.githubusercontent.com/89829943/180703483-651ff118-7495-467d-b205-eadc8db1ad9d.png">
   
-  #### ```✔️ 유저 로그아웃```
+  #### ```✔️ 사용자 로그아웃```
   <img width="1000px" alt="스크린샷 2022-07-26 08 18 34" src="https://user-images.githubusercontent.com/89829943/180892659-f66e8e82-48a9-4e71-b691-b3aa06ce98ea.png">
   <img width="1000px" alt="스크린샷 2022-07-26 08 18 48" src="https://user-images.githubusercontent.com/89829943/180892691-590d6fe5-cfd4-4437-9d00-3faa8721d509.png">
   
-  #### ```✔️ 유저 토큰 재발급```
+  #### ```✔️ 사용자 토큰 재발급```
   <img width="1000px" alt="스크린샷 2022-07-26 08 19 13" src="https://user-images.githubusercontent.com/89829943/180892728-a19efbe5-17bb-4157-9f74-d49094c64cf6.png">
   <img width="1000px" alt="스크린샷 2022-07-26 08 19 49" src="https://user-images.githubusercontent.com/89829943/180892750-47c76600-5fce-4179-aefa-4825981619be.png">
 
-  #### ```✔️ 게시글 생성```
-  <img width="1000px" alt="스크린샷 2022-07-25 14 19 09" src="https://user-images.githubusercontent.com/89829943/180703881-f7836fb0-edc6-4e39-a34b-5f63487df411.png">
-  <img width="1000px" alt="스크린샷 2022-07-25 14 19 34" src="https://user-images.githubusercontent.com/89829943/180703903-9c6a98b3-7e60-49f2-b072-3157285403f1.png">
-  
-  #### ```✔️ 게시글 리스트```
-  <img width="1000px" height="500px" alt="스크린샷 2022-07-25 14 23 14" src="https://user-images.githubusercontent.com/89829943/180704506-2666460f-9303-437f-a097-57c1d0c4d5ac.png">
-  <img width="1000px" alt="스크린샷 2022-07-25 14 24 07" src="https://user-images.githubusercontent.com/89829943/180704527-8a644faa-6240-4007-b77e-c19559d0c0b9.png">
-  
-  #### ```✔️ 게시글 상세```
-  <img width="1000px" alt="스크린샷 2022-07-25 14 29 31" src="https://user-images.githubusercontent.com/89829943/180704936-a1bd6f7e-334c-4406-bee6-5351e3d7401d.png">
-  <img width="1000px" alt="스크린샷 2022-07-25 14 29 51" src="https://user-images.githubusercontent.com/89829943/180704952-a4015272-ebfb-44c7-9b40-3691fce2e3e4.png">
-  
-  #### ```✔️ 게시글 수정```
-  <img width="1000px" alt="스크린샷 2022-07-25 14 35 05" src="https://user-images.githubusercontent.com/89829943/180705721-ee0dad11-9766-4f89-8c86-dc490501d399.png">
-  <img width="1000px" alt="스크린샷 2022-07-25 14 38 21" src="https://user-images.githubusercontent.com/89829943/180705749-6c7b698d-5e85-4e2e-875f-2d6810888b70.png">
+  #### ```✔️ 가계부 생성```
 
-  #### ```✔️ 게시글 삭제```
-  <img width="1000px" alt="스크린샷 2022-07-25 14 41 00" src="https://user-images.githubusercontent.com/89829943/180706062-927f16bc-a39c-47e8-bcb8-1bb8bf02fd4f.png">
-  <img width="1000" alt="스크린샷 2022-07-25 14 41 16" src="https://user-images.githubusercontent.com/89829943/180706079-da15b387-3e39-4fb3-b4a7-fe680a0b947a.png">
-
-  #### ```✔️ 게시글 복구```
-  <img width="1000px" alt="스크린샷 2022-07-25 14 43 04" src="https://user-images.githubusercontent.com/89829943/180706335-55c841bb-1f46-4f6d-a76c-0271a89f8499.png">
-  <img width="1000px" alt="스크린샷 2022-07-25 14 43 19" src="https://user-images.githubusercontent.com/89829943/180706359-821c846a-0be1-4843-9ccd-bc2f67d3d4bf.png">
-
-  #### ```✔️ 게시글 좋아요```
-  <img width="1000px" alt="스크린샷 2022-07-25 14 45 39" src="https://user-images.githubusercontent.com/89829943/180706665-af18609d-e02f-4b42-81c7-265160689360.png">
-  <img width="1000px" alt="스크린샷 2022-07-25 14 45 55" src="https://user-images.githubusercontent.com/89829943/180706681-de52c19c-df98-4d68-b220-5cbf11d43c74.png">
-  <img width="1000px" alt="스크린샷 2022-07-25 14 46 09" src="https://user-images.githubusercontent.com/89829943/180706695-fb6b4b03-cfbd-4499-9699-f61421e266d6.png">
 
 <br> 
 
@@ -350,36 +332,43 @@
   <img width="1000px" alt="스크린샷 2022-07-27 08 47 14" src="https://user-images.githubusercontent.com/89829943/181131164-f9bd2137-1f08-4263-9a31-035cd0435af8.png">
 
 
-  
 <br> 
 
 > **Test**
 - #### 🚦 테스트코드 작성
-  #### 전체 테스트코드: 67 cases
+  #### 전체 테스트코드: 119 cases
   
   |ID|Feature|Method|Success cases|Fail cases|
   |---|----|----|----|----|
-  |1|유저 회원가입|POST|1 case|14 cases|
-  |2|유저 로그인|POST|1 case|4 cases|
-  |3|유저 로그아웃|POST|1 case|3 cases|
-  |4|유저 토큰 재발급|POST|1 case|3 cases|
-  |5|게시글 생성|POST|1 case|4 cases|
-  |6|게시글 리스트|GET|12 cases|1 case|
-  |7|게시글 상세|GET|1 case|2 cases|
-  |8|게시글 수정|PATCH|1 case|3 cases|
-  |9|게시글 삭제|DELETE|1 case|4 cases|
-  |10|게시글 복구|PATCH|1 case|4 cases|
-  |11|게시글 좋아요(생성/취소)|POST|2 cases|2 cases|
-  <img width="1000px" alt="스크린샷 2022-07-26 08 24 53" src="https://user-images.githubusercontent.com/89829943/180892935-cf0233dc-2c24-43a3-a07c-06b7e3196b91.png">
-  <img width="1000px" alt="스크린샷 2022-07-26 08 25 13" src="https://user-images.githubusercontent.com/89829943/180892946-d815559f-bc95-4bf1-b69e-1c8df5be5f83.png">
-
+  |1|사용자 회원가입|POST|1 case|14 cases|
+  |2|사용자 로그인|POST|1 case|4 cases|
+  |3|사용자 로그아웃|POST|1 case|3 cases|
+  |4|사용자 토큰 재발급|POST|1 case|3 cases|
+  |5|가계부 생성|POST|1 case|4 cases|
+  |6|가계부 리스트|GET|9 cases|1 case|
+  |7|가계부 수정|PATCH|1 case|3 cases|
+  |8|가계부 삭제|DELETE|1 case|4 cases|
+  |9|가계부 복구|PATCH|1 case|4 cases|
+  |10|카테고리 생성|POST|1 case|2 cases|
+  |11|카테고리 리스트|GET|7 cases|1 case|
+  |12|카테고리 수정|PATCH|1 case|3 cases|
+  |13|카테고리 삭제|DELETE|1 case|4 cases|
+  |14|카테고리 복구|PATCH|1 case|4 cases|
+  |15|가계부 기록 생성|POST|1 case|8 cases|
+  |16|가계부 기록 리스트|GET|12 cases|3 cases|
+  |17|가계부 기록 수정|PATCH|1 case|5 cases|
+  |18|가계부 기록 삭제|DELETE|1 case|6 cases|
+  <img width="1000px" alt="스크린샷 2022-07-29 07 45 43" src="https://user-images.githubusercontent.com/89829943/181665424-0d4552d0-96d5-4d98-ab8e-22b6c5c435ca.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 07 45 58" src="https://user-images.githubusercontent.com/89829943/181665446-02205b2e-d704-4cb6-9f47-6c93fe353367.png">
+  
 
 <br> 
 
 > **Issue**
 - #### ⏰ 프로젝트 일정관리
   #### 프로젝트 진행사항을 칸반보드와 이슈티켓으로 관리했습니다.
-  <img width="1000px" alt="스크린샷 2022-07-27 07 44 11" src="https://user-images.githubusercontent.com/89829943/181125089-0ebeb41f-e5d3-4248-912e-212ca7ec281a.png">
+  <img width="1000px" alt="스크린샷 2022-07-28 11 31 18" src="https://user-images.githubusercontent.com/89829943/181666193-757be56a-365a-4efb-bf49-4f4257cb20c8.png">
+
 
 
 <br>
@@ -395,7 +384,7 @@
   <br>
   
    ```
-   git clone https://github.com/F5-Refresh/donggyu-sns.git
+   git clone https://github.com/pasitoapasito/wantedP.O-payhere.git
    cd project directory
    ```
   
@@ -441,7 +430,7 @@
   Docker로 DB를 구축하는 경우 or AWS RDS로 DB를 구축하는 경우 등
   다양한 방법으로 DB를 구축하는 경우에 맞게 DB 설정을 변경합니다.
   
-  '''
+  
   ## Docker DB ##
   DATABASES = {
       'default': {
@@ -453,8 +442,8 @@
           'PORT'    : get_env_variable('MYSQL_TCP_PORT'),
       }
   }
+  
   '''
-
   ## AWS RDS ##
   DATABASES = {
       'default': {
@@ -467,6 +456,7 @@
           'OPTIONS' : {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
       }
   }
+  '''
   ```
   
   5. DB의 Table 구조를 최신 modeling에 맞게 설정합니다.
@@ -488,7 +478,7 @@
   <br>
   
   ```
-  git clone https://github.com/F5-Refresh/donggyu-sns.git
+  git clone https://github.com/pasitoapasito/wantedP.O-payhere.git
   cd project directory
   ```
   
@@ -525,7 +515,7 @@
   Docker로 DB를 구축하는 경우 or AWS RDS로 DB를 구축하는 경우 등
   다양한 방법으로 DB를 구축하는 경우에 맞게 DB 설정을 변경합니다.
   
-  '''
+  
   ## Docker DB ##
   DATABASES = {
       'default': {
@@ -537,8 +527,8 @@
           'PORT'    : get_env_variable('MYSQL_TCP_PORT'),
       }
   }
+  
   '''
-
   ## AWS RDS ##
   DATABASES = {
       'default': {
@@ -551,6 +541,7 @@
           'OPTIONS' : {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"},
       }
   }
+  '''
   ```
   
   4. docker-compose 명령을 사용하여 DB와 Django 서버 컨테이너를 실행시킵니다.
@@ -564,15 +555,33 @@
 - #### 🛠 프로젝트 폴더구조
 
   ```
-  📦.github
-   ┣ 📂ISSUE_TEMPLATE
-   ┃ ┣ 📜issue-template.md
-   ┃ ┗ 📜issue_template.md
-   ┗ 📜pull_request_template.md
-  📦config
+  📦account_books
+   ┣ 📂migrations
+   ┃ ┣ 📜0001_initial.py
+   ┃ ┣ 📜0002_alter_accountbook_name.py
+   ┃ ┣ 📜0003_alter_accountbookcategory_name_and_more.py
+   ┃ ┣ 📜0004_alter_accountbooklog_title.py
+   ┃ ┣ 📜0005_alter_accountbook_name_and_more.py
+   ┃ ┗ 📜__init__.py
+   ┣ 📂tests
+   ┃ ┣ 📜__init__.py
+   ┃ ┣ 📜tests_account_book_categories.py
+   ┃ ┣ 📜tests_account_book_logs.py
+   ┃ ┗ 📜tests_account_books.py
+   ┣ 📂views
+   ┃ ┣ 📜account_book_categories.py
+   ┃ ┣ 📜account_book_logs.py
+   ┃ ┗ 📜account_books.py
+   ┣ 📜__init__.py
+   ┣ 📜admin.py
+   ┣ 📜apps.py
+   ┣ 📜models.py
+   ┣ 📜serializers.py
+   ┗ 📜urls.py
+   📦config
    ┗ 📂nginx
    ┃ ┗ 📜nginx.conf
-  📦core
+   📦core
    ┣ 📂migrations
    ┃ ┗ 📜__init__.py
    ┣ 📂utils
@@ -584,38 +593,16 @@
    ┣ 📜models.py
    ┣ 📜tests.py
    ┗ 📜views.py
-  📦posts
-   ┣ 📂migrations
-   ┃ ┣ 📜0001_initial.py
-   ┃ ┣ 📜0002_initial.py
-   ┃ ┣ 📜0003_remove_post_tags_post_tags.py
-   ┃ ┣ 📜0004_accessip.py
-   ┃ ┗ 📜__init__.py
-   ┣ 📂tests
-   ┃ ┣ 📜__init__.py
-   ┃ ┣ 📜tests_post_create.py
-   ┃ ┣ 📜tests_post_delete.py
-   ┃ ┣ 📜tests_post_detail.py
-   ┃ ┣ 📜tests_post_like.py
-   ┃ ┣ 📜tests_post_list.py
-   ┃ ┣ 📜tests_post_restore.py
-   ┃ ┗ 📜tests_post_update.py
-   ┣ 📜__init__.py
-   ┣ 📜admin.py
-   ┣ 📜apps.py
-   ┣ 📜models.py
-   ┣ 📜serializers.py
-   ┣ 📜urls.py
-   ┗ 📜views.py
-  📦sns
+   📦payhere
    ┣ 📜__init__.py
    ┣ 📜asgi.py
    ┣ 📜settings.py
    ┣ 📜urls.py
    ┗ 📜wsgi.py
-  📦users
+   📦users
    ┣ 📂migrations
    ┃ ┣ 📜0001_initial.py
+   ┃ ┣ 📜0002_alter_user_email.py
    ┃ ┗ 📜__init__.py
    ┣ 📂tests
    ┃ ┣ 📜__init__.py
