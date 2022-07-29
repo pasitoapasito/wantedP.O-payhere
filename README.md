@@ -412,7 +412,11 @@
   |17|가계부 기록 수정|PATCH|1 case|5 cases|
   |18|가계부 기록 삭제|DELETE|1 case|6 cases|
   <img width="1000px" alt="스크린샷 2022-07-29 07 45 43" src="https://user-images.githubusercontent.com/89829943/181665424-0d4552d0-96d5-4d98-ab8e-22b6c5c435ca.png">
-  <img width="1000px" alt="스크린샷 2022-07-29 07 45 58" src="https://user-images.githubusercontent.com/89829943/181665446-02205b2e-d704-4cb6-9f47-6c93fe353367.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 16 26 29" src="https://user-images.githubusercontent.com/89829943/181708377-b8bac9fb-d7d1-427b-8bcc-e1a01cb533f7.png">
+  
+  #### 테스트 커버리지: 98%
+  <img width="1000px" alt="스크린샷 2022-07-29 16 27 59" src="https://user-images.githubusercontent.com/89829943/181708728-c0ff56f2-11f8-42f5-b2f6-2b22340273bb.png">
+
   
 <br> 
 
