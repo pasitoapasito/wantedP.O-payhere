@@ -275,8 +275,7 @@
 
 > **Modeling**
 - #### 🚀 ERD 구조
-  <img width="1000px" height="700px" alt="스크린샷 2022-07-29 12 51 22" src="https://user-images.githubusercontent.com/89829943/181679209-7bbb0fb3-7bf2-463d-b977-d4dbb12ec076.png">
-
+  <img width="1000px" alt="스크린샷 2022-07-29 12 55 19" src="https://user-images.githubusercontent.com/89829943/181679665-4f8c8aec-b4dc-450c-9b1a-afe5640d863f.png">
 
 
 <br> 
