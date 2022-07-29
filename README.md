@@ -110,7 +110,7 @@
   - 토큰을 발행해서 인증/인가를 제어하는 방식으로 구현해주세요.
   - 구현이 불가능한 부분에 대해서는 가능한 부분까지 구현하는 것을 목표로 해주세요.
   - 모든 코드에는 이유가 있어야 하고 동료에게 설명할 수 있어야 합니다.
-  - README에 구현하시 내용(API 및 설계 관련)과 코드에 대한 생각을 자유롭게 작성해주세요.
+  - README에 구현하신 내용(API 및 설계 관련)과 코드에 대한 생각을 자유롭게 작성해주세요.
  
 <br>
 
@@ -306,23 +306,76 @@
   
 - #### ✨ Swagger UI
   #### ```✔️ 사용자 회원가입``` 
-  <img width="1000px" alt="스크린샷 2022-07-25 14 06 34" src="https://user-images.githubusercontent.com/89829943/180702579-5f394884-a7a6-4db7-9658-fe32022c9ced.png">
-  <img width="1000px" alt="스크린샷 2022-07-25 14 07 09" src="https://user-images.githubusercontent.com/89829943/180702609-1b2c200c-0f8b-467e-ae44-a3af311a2640.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 13 53" src="https://user-images.githubusercontent.com/89829943/181668672-d319ebc3-a0bf-4b0a-8163-ee0a21598b1b.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 14 16" src="https://user-images.githubusercontent.com/89829943/181668695-175afa5d-5223-4d98-a562-c09333658c4d.png">
   
   #### ```✔️ 사용자 로그인```
-  <img width="1000px" alt="스크린샷 2022-07-25 14 14 37" src="https://user-images.githubusercontent.com/89829943/180703475-55f6b39e-1d12-4a0d-bfc8-83182b418fb9.png">
-  <img width="1000px" alt="스크린샷 2022-07-25 14 15 16" src="https://user-images.githubusercontent.com/89829943/180703483-651ff118-7495-467d-b205-eadc8db1ad9d.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 17 19" src="https://user-images.githubusercontent.com/89829943/181668976-e847610d-5dd0-4fab-a5fc-c5305b1d90ea.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 17 35" src="https://user-images.githubusercontent.com/89829943/181668993-bbab822b-1c93-49fa-a5d8-b6942beede35.png">
   
   #### ```✔️ 사용자 로그아웃```
-  <img width="1000px" alt="스크린샷 2022-07-26 08 18 34" src="https://user-images.githubusercontent.com/89829943/180892659-f66e8e82-48a9-4e71-b691-b3aa06ce98ea.png">
-  <img width="1000px" alt="스크린샷 2022-07-26 08 18 48" src="https://user-images.githubusercontent.com/89829943/180892691-590d6fe5-cfd4-4437-9d00-3faa8721d509.png">
-  
+  <img width="1000px" alt="스크린샷 2022-07-29 11 21 01" src="https://user-images.githubusercontent.com/89829943/181669401-7540c353-7cdf-41ce-865a-2b3951a0a28b.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 19 44" src="https://user-images.githubusercontent.com/89829943/181669231-9b567817-0029-4f72-b16e-8578a9e2c381.png">
+
   #### ```✔️ 사용자 토큰 재발급```
-  <img width="1000px" alt="스크린샷 2022-07-26 08 19 13" src="https://user-images.githubusercontent.com/89829943/180892728-a19efbe5-17bb-4157-9f74-d49094c64cf6.png">
-  <img width="1000px" alt="스크린샷 2022-07-26 08 19 49" src="https://user-images.githubusercontent.com/89829943/180892750-47c76600-5fce-4179-aefa-4825981619be.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 22 49" src="https://user-images.githubusercontent.com/89829943/181669666-dc0f3a3c-e93c-4606-bd80-536e445f639a.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 23 06" src="https://user-images.githubusercontent.com/89829943/181669682-b09f3740-e2b1-439c-99bf-ebd5abd633bc.png">
 
   #### ```✔️ 가계부 생성```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 33 52" src="https://user-images.githubusercontent.com/89829943/181670909-8efc2d58-1dba-4a5b-9656-063916bbc9a5.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 32 32" src="https://user-images.githubusercontent.com/89829943/181670921-1d6dfbc2-f566-4653-9f33-5ffaf187892b.png">
 
+  #### ```✔️ 가계부 리스트```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 31 20" src="https://user-images.githubusercontent.com/89829943/181671018-271981e9-a821-4ea1-b7ee-b12d325d593e.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 31 41" src="https://user-images.githubusercontent.com/89829943/181671036-aec6bb34-be7f-4758-8ba1-2554e3df13dd.png">
+
+  #### ```✔️ 가계부 수정```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 37 34" src="https://user-images.githubusercontent.com/89829943/181671275-5a4c009d-4d4c-44c6-bfa5-599bd1ec3790.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 37 49" src="https://user-images.githubusercontent.com/89829943/181671295-01b37247-5cbd-422b-a7a4-97fab4e4c3cb.png">
+  
+  #### ```✔️ 가계부 삭제```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 40 57" src="https://user-images.githubusercontent.com/89829943/181671774-8e25e3a4-3501-4f8e-9a03-f7f2ceb99dc5.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 41 14" src="https://user-images.githubusercontent.com/89829943/181671787-7a1c37ae-9e23-4a3b-a7ad-87a9bb5828b8.png">
+  
+  #### ```✔️ 가계부 복구```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 41 43" src="https://user-images.githubusercontent.com/89829943/181671807-ed20b865-7d9c-4cc8-ae46-d14b049593c9.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 42 01" src="https://user-images.githubusercontent.com/89829943/181671822-def60e68-5a72-40db-9b94-6caa02c295fd.png">
+
+  #### ```✔️ 카테고리 생성```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 44 27" src="https://user-images.githubusercontent.com/89829943/181672215-08b9b9d3-46d0-4e49-a0f2-934a3e664c5b.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 44 52" src="https://user-images.githubusercontent.com/89829943/181672228-ab32d54a-fb9d-4473-9278-2102531bd11c.png">
+  
+  #### ```✔️ 카테고리 리스트```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 45 39" src="https://user-images.githubusercontent.com/89829943/181672253-5a556d4d-f59e-4874-9716-f8fe35a3b504.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 45 58" src="https://user-images.githubusercontent.com/89829943/181672275-bbc6e934-80dd-4f56-bfcc-ed7a7d5c38ea.png">
+  
+  #### ```✔️ 카테고리 수정```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 48 16" src="https://user-images.githubusercontent.com/89829943/181672668-be9c4902-3f79-4c10-82a2-2ff8d81e7f6d.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 48 32" src="https://user-images.githubusercontent.com/89829943/181672681-cad4c28e-ea32-41bb-b5a9-28c9d2108e9c.png">
+
+  #### ```✔️ 카테고리 삭제```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 49 01" src="https://user-images.githubusercontent.com/89829943/181672716-c1b0c2df-0d52-4436-9e61-799d79d64cfb.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 49 13" src="https://user-images.githubusercontent.com/89829943/181672732-478b582b-4db4-4185-8136-b6ea5617dc2f.png">
+
+  #### ```✔️ 카테고리 복구```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 49 33" src="https://user-images.githubusercontent.com/89829943/181672753-dbd10739-0433-48f0-85a3-7e7d498c5721.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 49 52" src="https://user-images.githubusercontent.com/89829943/181672775-91952330-fe4e-4a6a-bcc7-4079564f48c6.png">
+
+  #### ```✔️ 가계부 기록 생성```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 52 54" src="https://user-images.githubusercontent.com/89829943/181673234-b504a310-ca90-4d15-9805-7afce1b8c4cb.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 53 14" src="https://user-images.githubusercontent.com/89829943/181673248-ad68d243-dbfa-4623-9216-aee289541c6a.png">
+  
+  #### ```✔️ 가계부 기록 리스트```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 54 36" src="https://user-images.githubusercontent.com/89829943/181673268-2fc965c5-b785-451b-852c-8a5858f93383.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 55 05" src="https://user-images.githubusercontent.com/89829943/181673286-b66bcfed-29c8-4001-b727-75f788d84ee2.png">
+
+  #### ```✔️ 가계부 기록 수정```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 57 52" src="https://user-images.githubusercontent.com/89829943/181673724-5d0e107b-ea24-46ca-b44c-fa4f46f290c5.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 57 52" src="https://user-images.githubusercontent.com/89829943/181673773-31a86efc-f3c6-4412-8335-d89bb2d49829.png">
+  
+  #### ```✔️ 가계부 기록 삭제```
+  <img width="1000px" alt="스크린샷 2022-07-29 11 58 31" src="https://user-images.githubusercontent.com/89829943/181673802-a76326e4-2c63-4b35-ad24-ade999256642.png">
+  <img width="1000px" alt="스크린샷 2022-07-29 11 58 54" src="https://user-images.githubusercontent.com/89829943/181673817-73f23193-20fc-4397-8ce1-475e05ff22c5.png">
 
 <br> 
 
@@ -361,14 +414,12 @@
   <img width="1000px" alt="스크린샷 2022-07-29 07 45 43" src="https://user-images.githubusercontent.com/89829943/181665424-0d4552d0-96d5-4d98-ab8e-22b6c5c435ca.png">
   <img width="1000px" alt="스크린샷 2022-07-29 07 45 58" src="https://user-images.githubusercontent.com/89829943/181665446-02205b2e-d704-4cb6-9f47-6c93fe353367.png">
   
-
 <br> 
 
 > **Issue**
 - #### ⏰ 프로젝트 일정관리
   #### 프로젝트 진행사항을 칸반보드와 이슈티켓으로 관리했습니다.
   <img width="1000px" alt="스크린샷 2022-07-28 11 31 18" src="https://user-images.githubusercontent.com/89829943/181666193-757be56a-365a-4efb-bf49-4f4257cb20c8.png">
-
 
 
 <br>
@@ -550,7 +601,9 @@
   ```
   docker-compose -f ./docker-compose.yml up (-d)
   ```
-  
+
+<br>
+
 > **Structure**
 - #### 🛠 프로젝트 폴더구조
 
